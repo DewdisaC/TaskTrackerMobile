@@ -1,98 +1,96 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect, useRouter } from 'expo-router';
+import React, { useCallback, useMemo, useState } from 'react';
+import { FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { TaskCard } from '@/components/TaskCard';
+import { useTasks } from '@/context/TaskContext';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const router = useRouter();
+  const { tasks, loading, toggleTask } = useTasks();
+  const [refreshing, setRefreshing] = useState(false);
+  const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all');
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  useFocusEffect(useCallback(() => undefined, []));
+
+  const completed = tasks.filter((task) => task.completed).length;
+  const pending = tasks.length - completed;
+  const visibleTasks = useMemo(() => tasks.filter((task) => filter === 'all' || (filter === 'completed' ? task.completed : !task.completed)), [tasks, filter]);
+
+  const refresh = () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 350);
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={visibleTasks}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.list}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
+        ListHeaderComponent={
+          <>
+            <View style={styles.header}>
+              <View>
+                <Text style={styles.eyebrow}>TASK TRACKER</Text>
+                <Text style={styles.heading}>Stay on top of your day.</Text>
+              </View>
+              <Pressable style={styles.addIcon} onPress={() => router.push('/add-task')}>
+                <Ionicons name="add" size={24} color="#fff" />
+              </Pressable>
+            </View>
+            <View style={styles.statsRow}>
+              <View style={styles.statCard}><Text style={styles.statNumber}>{tasks.length}</Text><Text style={styles.statLabel}>Total</Text></View>
+              <View style={styles.statCard}><Text style={styles.statNumber}>{pending}</Text><Text style={styles.statLabel}>Pending</Text></View>
+              <View style={styles.statCard}><Text style={styles.statNumber}>{completed}</Text><Text style={styles.statLabel}>Done</Text></View>
+            </View>
+            <View style={styles.filters}>
+              {(['all', 'pending', 'completed'] as const).map((item) => (
+                <Pressable key={item} onPress={() => setFilter(item)} style={[styles.filter, filter === item && styles.filterActive]}>
+                  <Text style={[styles.filterText, filter === item && styles.filterTextActive]}>{item[0].toUpperCase() + item.slice(1)}</Text>
+                </Pressable>
+              ))}
+            </View>
+            <Text style={styles.sectionTitle}>{filter === 'all' ? 'Your Tasks' : `${filter[0].toUpperCase()}${filter.slice(1)} Tasks`}</Text>
+          </>
+        }
+        renderItem={({ item }) => <TaskCard task={item} onToggle={() => toggleTask(item.id)} onPress={() => router.push(`/task/${item.id}`)} />}
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            <Ionicons name="checkmark-circle-outline" size={48} color="#2563eb" />
+            <Text style={styles.emptyTitle}>{loading ? 'Loading tasks...' : 'No tasks here'}</Text>
+            {!loading && <Text style={styles.emptyText}>Create a task to start organizing your day.</Text>}
+          </View>
+        }
+      />
+      <Pressable style={styles.fab} onPress={() => router.push('/add-task')}>
+        <Ionicons name="add" size={28} color="#fff" />
+      </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  container: { flex: 1, backgroundColor: '#f8fafc' },
+  list: { padding: 20, paddingBottom: 100 },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 18, marginBottom: 22 },
+  eyebrow: { fontSize: 11, fontWeight: '800', letterSpacing: 1.5, color: '#2563eb' },
+  heading: { marginTop: 6, fontSize: 27, lineHeight: 33, fontWeight: '800', color: '#0f172a', maxWidth: 280 },
+  addIcon: { width: 46, height: 46, borderRadius: 15, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center' },
+  statsRow: { flexDirection: 'row', gap: 10, marginBottom: 22 },
+  statCard: { flex: 1, backgroundColor: '#fff', borderRadius: 16, padding: 14, borderWidth: 1, borderColor: '#e5e7eb' },
+  statNumber: { fontSize: 23, fontWeight: '800', color: '#0f172a' },
+  statLabel: { marginTop: 4, fontSize: 12, color: '#64748b' },
+  filters: { flexDirection: 'row', backgroundColor: '#e2e8f0', borderRadius: 12, padding: 4, marginBottom: 22 },
+  filter: { flex: 1, paddingVertical: 9, borderRadius: 9, alignItems: 'center' },
+  filterActive: { backgroundColor: '#fff' },
+  filterText: { color: '#64748b', fontWeight: '600', fontSize: 12 },
+  filterTextActive: { color: '#0f172a' },
+  sectionTitle: { fontSize: 18, fontWeight: '800', color: '#0f172a', marginBottom: 12 },
+  empty: { alignItems: 'center', paddingVertical: 50, paddingHorizontal: 20 },
+  emptyTitle: { marginTop: 14, fontSize: 18, fontWeight: '800', color: '#0f172a' },
+  emptyText: { marginTop: 6, color: '#64748b', textAlign: 'center', lineHeight: 20 },
+  fab: { position: 'absolute', right: 22, bottom: 24, width: 58, height: 58, borderRadius: 29, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center', elevation: 5, shadowColor: '#000', shadowOpacity: 0.18, shadowRadius: 8, shadowOffset: { width: 0, height: 4 } },
 });

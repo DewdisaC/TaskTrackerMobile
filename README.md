@@ -1,50 +1,104 @@
-# Welcome to your Expo app 👋
+# TaskTracker Mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A clean cross-platform task management application built with **Expo, React Native, TypeScript, and Expo Router**.
 
-## Get started
+## ✨ Features
 
-1. Install dependencies
+- Create tasks with a title and description
+- Set low, medium, or high priority
+- Add optional due dates
+- Mark tasks as completed or pending
+- Filter tasks by all, pending, or completed
+- View task details
+- Delete tasks with confirmation
+- Productivity statistics and completion rate
+- Persistent local task storage
+- Android, iOS, and web-ready Expo project structure
 
-   ```bash
-   npm install
-   ```
+## 🛠️ Tech Stack
 
-2. Start the app
+- React Native
+- Expo 54
+- TypeScript
+- Expo Router
+- React Navigation
+- AsyncStorage
+- Expo Vector Icons
 
-   ```bash
-   npx expo start
-   ```
+## 📁 Project Structure
 
-In the output, you'll find options to open the app in a
+```text
+app/
+├── (tabs)/
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   └── explore.tsx
+├── _layout.tsx
+├── add-task.tsx
+└── task/
+    └── [id].tsx
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+components/
+└── TaskCard.tsx
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+context/
+└── TaskContext.tsx
 
-## Get a fresh project
+types/
+└── task.ts
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+utils/
+└── storage.ts
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🚀 Getting Started
 
-## Learn more
+### Prerequisites
 
-To learn more about developing your project with Expo, look at the following resources:
+- Node.js
+- npm
+- Expo-compatible development environment
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Installation
 
-## Join the community
+```bash
+npm install
+npx expo start
+```
 
-Join our community of developers creating universal apps.
+Then use the Expo CLI to open the application on Android, iOS, or the web.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📱 Available Scripts
+
+```bash
+npm start
+npm run android
+npm run ios
+npm run web
+npm run lint
+```
+
+## 💾 Data Storage
+
+Tasks are stored locally on the device using **AsyncStorage**, allowing task data to remain available after the application is closed and reopened.
+
+## 🎯 Roadmap
+
+- Task editing UI
+- Better date selection with a native date picker
+- Categories and tags
+- Search and advanced filtering
+- Notifications and reminders
+- Improved accessibility
+- Automated testing
+- Production builds and release workflow
+
+## 👨‍💻 Author
+
+**Chanul Dewdisa**
+
+Software Engineer | Full-Stack Developer | AI Researcher | Game Developer
+
+## 📄 License
+
+This project is currently a personal development project. Licensing can be added when the project is prepared for wider distribution.

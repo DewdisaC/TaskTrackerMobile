@@ -1,42 +1,53 @@
 # TaskTracker Mobile
 
-A clean cross-platform task management application built with **Expo, React Native, TypeScript, and Expo Router**.
+<p align="center">
+  <img src="./assets/banner.svg" alt="TaskTracker Mobile banner" width="100%">
+</p>
 
-## ✨ Features
+<p align="center">
+  Cross-platform task management built with React Native, Expo and TypeScript.
+</p>
 
-- Create tasks with a title and description
-- Set low, medium, or high priority
-- Add optional due dates
-- Mark tasks as completed or pending
-- Filter tasks by all, pending, or completed
-- View task details
-- Delete tasks with confirmation
-- Productivity statistics and completion rate
-- Persistent local task storage
-- Android, iOS, and web-ready Expo project structure
+<div align="center">
 
-## 🛠️ Tech Stack
+![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+
+</div>
+
+## Overview
+
+TaskTracker Mobile is a clean task-management application designed around fast task creation, prioritisation, progress tracking and persistent local storage.
+
+## Features
+
+- Create, complete and delete tasks
+- Low / medium / high priority
+- Optional due dates
+- Pending / completed filtering
+- Task detail screens
+- Productivity statistics
+- Local persistence with AsyncStorage
+- Android, iOS and web-ready Expo structure
+
+## Tech Stack
 
 - React Native
 - Expo 54
 - TypeScript
 - Expo Router
-- React Navigation
 - AsyncStorage
 - Expo Vector Icons
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 app/
 ├── (tabs)/
-│   ├── _layout.tsx
-│   ├── index.tsx
-│   └── explore.tsx
-├── _layout.tsx
 ├── add-task.tsx
-└── task/
-    └── [id].tsx
+├── _layout.tsx
+└── task/[id].tsx
 
 components/
 └── TaskCard.tsx
@@ -51,54 +62,27 @@ utils/
 └── storage.ts
 ```
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js
-- npm
-- Expo-compatible development environment
-
-### Installation
+## Getting Started
 
 ```bash
 npm install
 npx expo start
 ```
 
-Then use the Expo CLI to open the application on Android, iOS, or the web.
+Then launch the project through Expo on Android, iOS or the web.
 
-## 📱 Available Scripts
+## Roadmap
 
-```bash
-npm start
-npm run android
-npm run ios
-npm run web
-npm run lint
-```
-
-## 💾 Data Storage
-
-Tasks are stored locally on the device using **AsyncStorage**, allowing task data to remain available after the application is closed and reopened.
-
-## 🎯 Roadmap
-
-- Task editing UI
-- Better date selection with a native date picker
+- Task editing
 - Categories and tags
 - Search and advanced filtering
 - Notifications and reminders
-- Improved accessibility
+- Accessibility improvements
 - Automated testing
-- Production builds and release workflow
+- Production release workflow
 
-## 👨‍💻 Author
+## Author
 
 **Chanul Dewdisa**
 
-Software Engineer | Full-Stack Developer | AI Researcher | Game Developer
-
-## 📄 License
-
-This project is currently a personal development project. Licensing can be added when the project is prepared for wider distribution.
+[GitHub](https://github.com/DewdisaC) • [Portfolio](https://chanul-portfolio-2027.vercel.app/)

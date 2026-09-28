@@ -33,6 +33,10 @@ export default function TaskDetailsScreen() {
         {!!task.dueDate && <View style={styles.info}><Ionicons name="calendar-outline" size={20} color="#2563eb" /><View><Text style={styles.infoLabel}>Due date</Text><Text style={styles.infoValue}>{task.dueDate}</Text></View></View>}
       </View>
 
+      <Pressable style={styles.editButton} onPress={() => router.push(`/edit-task/${task.id}`)}>
+        <Ionicons name="create-outline" size={21} color="#2563eb" />
+        <Text style={styles.editText}>Edit Task</Text>
+      </Pressable>
       <Pressable style={styles.completeButton} onPress={() => toggleTask(task.id)}>
         <Ionicons name={task.completed ? 'refresh' : 'checkmark-circle-outline'} size={22} color="#fff" />
         <Text style={styles.completeText}>{task.completed ? 'Mark as Pending' : 'Mark as Completed'}</Text>
@@ -59,7 +63,9 @@ const styles = StyleSheet.create({
   info: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 24, paddingTop: 18, borderTopWidth: 1, borderTopColor: '#eef2f7' },
   infoLabel: { fontSize: 11, color: '#94a3b8' },
   infoValue: { marginTop: 2, fontSize: 14, fontWeight: '700', color: '#334155' },
-  completeButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 18, backgroundColor: '#2563eb', borderRadius: 14, paddingVertical: 15 },
+  editButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 18, backgroundColor: '#eff6ff', borderRadius: 14, paddingVertical: 14, borderWidth: 1, borderColor: '#bfdbfe' },
+  editText: { color: '#2563eb', fontWeight: '800', fontSize: 15 },
+  completeButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 10, backgroundColor: '#2563eb', borderRadius: 14, paddingVertical: 15 },
   completeText: { color: '#fff', fontWeight: '800', fontSize: 15 },
   deleteButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 10, backgroundColor: '#fff', borderRadius: 14, paddingVertical: 14, borderWidth: 1, borderColor: '#fecaca' },
   deleteText: { color: '#dc2626', fontWeight: '800' },
